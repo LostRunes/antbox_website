@@ -11,6 +11,7 @@ import { Preloader } from './components/Preloader'
 import { Product } from './components/Product'
 import { Stats } from './components/Stats'
 import { StorySection } from './components/story/StorySection'
+import { Walkthrough } from './components/walkthrough/Walkthrough'
 import { WhyStack } from './components/WhyStack'
 import { startSmoothScroll } from './lib/smooth'
 
@@ -36,13 +37,14 @@ export default function App() {
         <Marquee items={['Campus', 'Sprint', 'Mentor', 'Ship', 'Get hired']} tilt />
         <StorySection name={name.trim()} setName={setName} />
         <Marquee items={['No resume round', 'Real briefs', 'Pre-placement offers', 'Validated talent']} dark reverse speed={2.5} />
-        <Journey />
+        <Walkthrough name={name.trim()} />
         <Stats />
+        <Journey />
         <Audience />
         <WhyStack />
         <Product />
         <Marquee items={['Build your tribe', 'Own your career story', 'Join the colony']} speed={2.5} />
-        <Footer name={name.trim()} />
+        <Footer />
       </main>
       <div className="grain" aria-hidden />
     </MotionConfig>

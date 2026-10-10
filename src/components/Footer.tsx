@@ -8,7 +8,7 @@ import { SplitText } from './SplitText'
 
 const WORD = 'antbox'.split('')
 
-export function Footer({ name }: { name: string }) {
+export function Footer() {
   const fine = useFinePointer()
   const wordRef = useRef<HTMLDivElement>(null)
   const px = useMotionValue(-9999)
@@ -30,7 +30,7 @@ export function Footer({ name }: { name: string }) {
 
       <div className="footer__cta">
         <p className="eyebrow purple">The end of chapter 05</p>
-        <SplitText as="h2" text={[`Your turn${name ? `, ${name}` : ''}.`, 'Join the colony.']} stagger={0.02} />
+        <SplitText as="h2" text={['Your turn.', 'Join the colony.']} stagger={0.02} />
         <div className="footer__ctas">
           <Pill variant="purple" href={PLATFORM_URL}>
             I'm a student
