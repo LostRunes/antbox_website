@@ -18,7 +18,7 @@ import { startSmoothScroll } from './lib/smooth'
 export default function App() {
   const [loading, setLoading] = useState(true)
   const [revealed, setRevealed] = useState(false)
-  const [name, setName] = useState('Aarav')
+  const [name, setName] = useState('')
   const { scrollYProgress } = useScroll()
   const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30 })
 

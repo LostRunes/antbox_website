@@ -63,7 +63,9 @@ const SPRINTS = [
 
 export function ApplyScreen({ name }: { name: string }) {
   const drawer = useAfter(1300)
-  const typedName = useTyped(name || 'Aarav', 1800, 70)
+  // with no visitor name, the form fills an email instead of inventing a name
+  const first = name || 'you@college.edu'
+  const typedName = useTyped(first, 1800, 70)
   const college = useTyped('State University', 2400, 45)
   const track = useAfter(3100)
   const sent = useAfter(3900)
@@ -102,10 +104,10 @@ export function ApplyScreen({ name }: { name: string }) {
       <motion.aside className="ws-drawer" initial={{ x: '100%' }} animate={{ x: drawer ? '0%' : '100%' }} transition={{ type: 'spring', stiffness: 160, damping: 22 }}>
         <small className="ws-eyebrow">Product Sprint · Northwind Labs</small>
         <h4>Apply in under 2 minutes</h4>
-        <label>Name</label>
+        <label>{name ? 'Name' : 'Email'}</label>
         <div className="ws-input">
           {typedName}
-          {typedName.length < (name || 'Aarav').length && <i className="ws-caret" />}
+          {typedName.length < first.length && <i className="ws-caret" />}
         </div>
         <label>College</label>
         <div className="ws-input">
@@ -356,7 +358,6 @@ const MAILS = [
 export function OfferScreen({ name }: { name: string }) {
   const opened = useAfter(1600)
   const sealed = useAfter(3000)
-  const who = name || 'Aarav'
   return (
     <div className="ws ws--mail">
       <div className="ws-inbox">
@@ -383,7 +384,7 @@ export function OfferScreen({ name }: { name: string }) {
               <small>Northwind Labs</small>
             </div>
             <h4>Pre-Placement Offer</h4>
-            <p>Dear {who},</p>
+            <p>Dear {name || 'future teammate'},</p>
             <p>Following your performance in the Product Sprint and internship, we're delighted to offer you a full-time role.</p>
             <div className="ws-letter__grid">
               <span>
@@ -402,7 +403,7 @@ export function OfferScreen({ name }: { name: string }) {
         )}
       </div>
 
-      {sealed && <OfferSeal who={who} />}
+      {sealed && <OfferSeal name={name} />}
 
       <FakeCursor
         path={[
@@ -418,7 +419,7 @@ export function OfferScreen({ name }: { name: string }) {
 }
 
 /** A ring spins round, closes, floods green and becomes a tick. */
-function OfferSeal({ who }: { who: string }) {
+function OfferSeal({ name }: { name: string }) {
   return (
     <motion.div className="ws-seal" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
       <svg viewBox="0 0 120 120" className="ws-seal__svg">
@@ -461,7 +462,7 @@ function OfferSeal({ who }: { who: string }) {
         )
       })}
       <motion.b {...rise(1.8)}>Offer received</motion.b>
-      <motion.small {...rise(1.95)}>Welcome to the tribe, {who}.</motion.small>
+      <motion.small {...rise(1.95)}>Welcome to the tribe{name ? `, ${name}` : ''}.</motion.small>
     </motion.div>
   )
 }
