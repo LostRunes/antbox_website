@@ -428,9 +428,9 @@ p {
 .hero__title {
   font-family: var(--serif);
   font-weight: 400;
-  font-size: clamp(54px, 12.5vw, 220px);
-  line-height: 0.88;
-  letter-spacing: -0.035em;
+  font-size: clamp(46px, 8.2vw, 136px);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
   position: relative;
   z-index: 2;
 }
@@ -440,14 +440,14 @@ p {
   flex-wrap: nowrap;
   gap: 0.18em;
 }
-.hero__title .row--right {
-  justify-content: flex-end;
+.hero__title .row--indent {
+  padding-left: 0.9em;
 }
 .hero__arrow {
   display: inline-grid;
   place-items: center;
-  width: 0.9em;
-  height: 0.62em;
+  width: 0.78em;
+  height: 0.5em;
   border-radius: 999px;
   background: var(--purple);
   color: var(--paper);
@@ -457,7 +457,7 @@ p {
   width: 52%;
 }
 .hero__bottom {
-  margin-top: clamp(20px, 4vh, 48px);
+  margin-top: clamp(28px, 6vh, 64px);
   display: grid;
   gap: 20px;
   align-items: end;
@@ -468,67 +468,14 @@ p {
   }
 }
 .hero__sub {
-  max-width: 520px;
-  font-size: clamp(16px, 1.5vw, 20px);
-  color: #3a3a40;
-}
-.hero__rotator {
-  display: inline-grid;
-  vertical-align: bottom;
-  overflow: hidden;
-  height: 1.5em;
-}
-.hero__rotator > span {
-  grid-area: 1/1;
-  color: var(--purple);
-  font-weight: 700;
+  max-width: 360px;
+  font-size: clamp(16px, 1.2vw, 18px);
+  color: #55555c;
 }
 .hero__ctas {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
-}
-.hero__float {
-  position: absolute;
-  z-index: 3;
-  will-change: transform;
-}
-.float-card {
-  background: var(--paper);
-  border-radius: 18px;
-  padding: 14px 16px;
-  box-shadow: 0 20px 50px -20px rgba(61, 22, 80, 0.35), 0 2px 0 rgba(0, 0, 0, 0.04);
-  font-size: 13px;
-  min-width: 170px;
-}
-.float-card b {
-  display: block;
-  font-size: 15px;
-}
-.float-card .bar {
-  height: 6px;
-  border-radius: 6px;
-  background: var(--lilac-2);
-  margin-top: 8px;
-  overflow: hidden;
-}
-.float-card .bar i {
-  display: block;
-  height: 100%;
-  width: 88%;
-  background: var(--purple);
-  border-radius: inherit;
-}
-.float-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 16px;
-  border-radius: 999px;
-  font-weight: 700;
-  font-size: 14px;
-  white-space: nowrap;
-  box-shadow: 0 16px 40px -18px rgba(0, 0, 0, 0.4);
 }
 .hero__ants {
   position: absolute;
@@ -1455,5 +1402,59 @@ p {
   .footer__badge {
     top: 32px;
     width: 92px;
+  }
+}
+
+/* chapter 3: the line orbits this badge, so it gets clear space above the card */
+.chapter__col {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  justify-self: center;
+}
+.chapter__col .chapter__copy {
+  max-width: none;
+}
+.chapter__orbit {
+  position: relative;
+  height: 310px;
+  display: flex;
+  align-items: center;
+  padding-left: 104px;
+}
+.chapter__badge {
+  display: grid;
+  place-content: center;
+  text-align: center;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 2px solid var(--purple);
+  color: var(--purple);
+  font-family: var(--serif);
+  font-size: 40px;
+  line-height: 1;
+}
+.chapter__badge small {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+@media (max-width: 899px) {
+  .chapter__orbit {
+    height: 190px;
+    padding-left: 58px;
+  }
+  .chapter__badge {
+    width: 72px;
+    height: 72px;
+    font-size: 30px;
+  }
+  .chapter__badge small {
+    font-size: 8px;
   }
 }
