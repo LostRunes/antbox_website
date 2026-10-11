@@ -6,8 +6,11 @@ import { SplitText } from '../SplitText'
 import { SceneDiscover, SceneGraduate, SceneHired, ScenePanic, SceneTrain } from './Scenes'
 
 type Pt = [number, number]
-/** A point the line passes through, the direction it travels there, and (for loop points) the loop radius. */
-type Node = { p: Pt; t: Pt; r?: number }
+/**
+ * A point the line passes through and the direction it travels there.
+ * Points on the same circle share `r`; `k` overrides the arc handle length for non-quarter arcs.
+ */
+type Node = { p: Pt; t: Pt; r?: number; k?: number }
 
 const KAPPA = 0.5523 // cubic Bézier handle ratio for a quarter circle
 
@@ -21,7 +24,7 @@ function toPath(nodes: Node[], maxHandle: number) {
     const dist = Math.hypot(b.p[0] - a.p[0], b.p[1] - a.p[1])
     // quarter arcs of the same loop get exact circle handles; everything else eases by distance,
     // capped so long drops don't swing the line off-screen
-    const h = a.r && a.r === b.r ? a.r * KAPPA : Math.min(dist * 0.42, maxHandle)
+    const h = a.r && a.r === b.r ? (a.k ?? a.r * KAPPA) : Math.min(dist * 0.42, maxHandle)
     const c1: Pt = [a.p[0] + a.t[0] * h, a.p[1] + a.t[1] * h]
     const c2: Pt = [b.p[0] - b.t[0] * h, b.p[1] - b.t[1] * h]
     d += ` C${f(c1[0])} ${f(c1[1])} ${f(c2[0])} ${f(c2[1])} ${f(b.p[0])} ${f(b.p[1])}`
@@ -41,8 +44,21 @@ function loop(cx: number, cy: number, r: number, dir: 1 | -1): Node[] {
   return [B, side1, top, side2, { ...B }]
 }
 
+/** Anticlockwise arc around (cx, cy) from one angle to another (degrees, SVG y-down, `to` < `from`). */
+function arc(cx: number, cy: number, r: number, from: number, to: number): Node[] {
+  const steps = Math.ceil((from - to) / 60)
+  const seg = ((from - to) / steps) * (Math.PI / 180)
+  const k = (4 / 3) * Math.tan(seg / 4) * r
+  return Array.from({ length: steps + 1 }, (_, i) => {
+    const a = (from * Math.PI) / 180 - i * seg
+    return { p: [cx + r * Math.cos(a), cy + r * Math.sin(a)], t: [Math.sin(a), -Math.cos(a)], r, k }
+  })
+}
+
 const DOWN: Pt = [0, 1]
-const ORBIT_CHAPTER = 2
+// in chapter 3 the line wraps around the glowing circle behind the monitor instead of passing through
+const RING_CHAPTER = 2
+const RING = { cx: 160, cy: 150, r: 130, viewW: 400 } // matches the circle in SceneDiscover
 
 type Table = { len: Float32Array; x: Float32Array; y: Float32Array; h: Float32Array; total: number }
 
@@ -78,7 +94,6 @@ export function StorySection({ name, setName }: { name: string; setName: (n: str
   const mobile = useIsMobile()
   const trackRef = useRef<HTMLDivElement>(null)
   const artRefs = useRef<(HTMLDivElement | null)[]>([])
-  const orbitRef = useRef<HTMLDivElement>(null)
   const stroke = mobile ? 34 : 84
   const pathRef = useRef<SVGPathElement>(null)
   const table = useRef<Table | null>(null)
@@ -115,20 +130,21 @@ export function StorySection({ name, setName }: { name: string; setName: (n: str
       { p: [w * (mobile ? 0.5 : 0.42), Math.min(120, anchors[0][1] * 0.3)], t: DOWN },
     ]
     anchors.forEach((a, i) => {
-      nodes.push({ p: a, t: DOWN })
+      if (i === RING_CHAPTER) {
+        // come in over the top of the circle, sweep anticlockwise down its left side, leave along the bottom
+        const art = artRefs.current[i]!.getBoundingClientRect()
+        const sc = art.width / RING.viewW
+        const cx = art.left - tr.left + RING.cx * sc
+        const cy = art.top - tr.top + RING.cy * sc
+        nodes.push(...arc(cx, cy, RING.r * sc + stroke / 2 + (mobile ? 6 : 14), -80, -260))
+      } else {
+        nodes.push({ p: a, t: DOWN })
+      }
       const b = anchors[i + 1]
       if (!b) return
-      if (i === ORBIT_CHAPTER && orbitRef.current) {
-        // swing over to the chapter badge and circle it anticlockwise before moving on
-        // layout offsets, not the on-screen box: the badge is scaled to 0 until it pops in
-        const box = orbitRef.current.getBoundingClientRect()
-        const badge = orbitRef.current.firstElementChild as HTMLElement
-        const ox = box.left - tr.left + badge.offsetLeft + badge.offsetWidth / 2
-        const oy = box.top - tr.top + badge.offsetTop + badge.offsetHeight / 2
-        nodes.push(...loop(ox, oy, badge.offsetWidth / 2 + stroke / 2 + (mobile ? 12 : 16), 1))
-        return
-      }
       if (mobile) {
+        // the ring already curls into chapter 3, so no extra loop right before it
+        if (i + 1 === RING_CHAPTER) return
         // the copy card sits between scenes on phones, so loop at the top of the next scene where it's visible
         const r = w * 0.17
         const cx = w - b[0]
@@ -258,24 +274,7 @@ export function StorySection({ name, setName }: { name: string; setName: (n: str
               {i === 3 && <SceneTrain on={reached >= 3} />}
               {i === 4 && <SceneHired on={reached >= 4} />}
             </div>
-            {i === ORBIT_CHAPTER ? (
-              <div className="chapter__col">
-                <div className="chapter__orbit" ref={orbitRef}>
-                  <motion.div
-                    className="chapter__badge"
-                    initial={{ scale: 0 }}
-                    animate={{ scale: reached >= i ? 1 : 0 }}
-                    transition={{ type: 'spring', stiffness: 220, damping: 15, delay: reached >= i ? 0.2 : 0 }}
-                  >
-                    0{i + 1}
-                    <small>Chapter</small>
-                  </motion.div>
-                </div>
-                <ChapterCopy c={c} i={i} reached={reached} name={name} setName={setName} />
-              </div>
-            ) : (
-              <ChapterCopy c={c} i={i} reached={reached} name={name} setName={setName} withNum />
-            )}
+            <ChapterCopy c={c} i={i} reached={reached} name={name} setName={setName} />
           </article>
         ))}
       </div>
@@ -283,9 +282,9 @@ export function StorySection({ name, setName }: { name: string; setName: (n: str
   )
 }
 
-type CopyProps = { c: (typeof CHAPTERS)[number]; i: number; reached: number; name: string; setName: (n: string) => void; withNum?: boolean }
+type CopyProps = { c: (typeof CHAPTERS)[number]; i: number; reached: number; name: string; setName: (n: string) => void }
 
-function ChapterCopy({ c, i, reached, name, setName, withNum }: CopyProps) {
+function ChapterCopy({ c, i, reached, name, setName }: CopyProps) {
   return (
     <motion.div
       className="chapter__copy"
@@ -293,11 +292,9 @@ function ChapterCopy({ c, i, reached, name, setName, withNum }: CopyProps) {
       animate={reached >= i ? { opacity: 1, y: 0 } : { opacity: 0, y: 60 }}
       transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: reached >= i ? 0.25 : 0 }}
     >
-      {withNum && (
-        <div className="chapter__num eyebrow">
-          <span>0{i + 1}</span> Chapter
-        </div>
-      )}
+      <div className="chapter__num eyebrow">
+        <span>0{i + 1}</span> Chapter
+      </div>
       <SplitText as="h3" className="chapter__title" text={c.title} play={reached >= i} delay={0.3} stagger={0.018} />
       <p className="chapter__text">{c.text}</p>
       {i === 2 && (
