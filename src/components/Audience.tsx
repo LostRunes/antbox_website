@@ -2,26 +2,27 @@ import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from
 import { useState, type PointerEvent } from 'react'
 import { useFinePointer } from '../lib/hooks'
 import { Pill } from './Magnetic'
+import { Doodle, type DoodleName } from './Doodle'
 import { PLATFORM_URL } from './Nav'
 import { SplitText } from './SplitText'
 
-type Card = { sticker: string; title: string; text: string; bg: string; fg?: string; chip: string }
+type Card = { sticker: string; title: string; text: string; bg: string; fg?: string; chip: string; d: DoodleName; a: string }
 
 const DATA: Record<'students' | 'corporates', { cta: string; cards: Card[] }> = {
   students: {
     cta: "I'm a student",
     cards: [
-      { sticker: 'Real work', title: 'Real briefs, real companies.', text: 'Work on actual projects from participating companies — not textbook case studies.', bg: '#c991df', chip: '#fbfaf5' },
-      { sticker: 'Fast-track', title: 'Straight to a PPO.', text: 'Top sprint performers get direct Pre-Placement Offers. No resume round.', bg: '#4ade80', chip: '#fbfaf5' },
-      { sticker: 'Your score', title: 'An AI-validated readiness score.', text: 'One number backed by sprint history and verified work output — trusted by enterprises.', bg: '#0b0b0d', fg: '#fbfaf5', chip: '#8e43ac' },
+      { sticker: 'Real work', title: 'Real briefs, real companies.', text: 'Work on actual projects from participating companies — not textbook case studies.', bg: '#c991df', chip: '#fbfaf5', d: 'briefcase', a: 'rgba(255,255,255,0.55)' },
+      { sticker: 'Fast-track', title: 'Straight to a PPO.', text: 'Top sprint performers get direct Pre-Placement Offers. No resume round.', bg: '#4ade80', chip: '#fbfaf5', d: 'bolt', a: 'rgba(255,255,255,0.55)' },
+      { sticker: 'Your score', title: 'An AI-validated readiness score.', text: 'One number backed by sprint history and verified work output — trusted by enterprises.', bg: '#0b0b0d', fg: '#fbfaf5', chip: '#8e43ac', d: 'gauge', a: 'rgba(142,67,172,0.55)' },
     ],
   },
   corporates: {
     cta: 'For corporates',
     cards: [
-      { sticker: 'Disrupt', title: 'Disrupt entry-level hiring.', text: 'Replace months of screening with a 2-week sprint that shows you who can actually do the work.', bg: '#fcb900', chip: '#fbfaf5' },
-      { sticker: 'Tribes', title: 'Build your own tribes.', text: 'Talent communities built around your culture, values and craft — warm before you ever post a role.', bg: '#8e43ac', fg: '#fbfaf5', chip: '#0b0b0d' },
-      { sticker: 'Validated', title: 'A validated talent pool.', text: 'Every candidate comes with a Readiness Score, sprint history and verified work output.', bg: '#e3e1d5', chip: '#fbfaf5' },
+      { sticker: 'Disrupt', title: 'Disrupt entry-level hiring.', text: 'Replace months of screening with a 2-week sprint that shows you who can actually do the work.', bg: '#fcb900', chip: '#fbfaf5', d: 'hourglass', a: 'rgba(255,255,255,0.55)' },
+      { sticker: 'Tribes', title: 'Build your own tribes.', text: 'Talent communities built around your culture, values and craft — warm before you ever post a role.', bg: '#8e43ac', fg: '#fbfaf5', chip: '#0b0b0d', d: 'tribe', a: 'rgba(255,255,255,0.3)' },
+      { sticker: 'Validated', title: 'A validated talent pool.', text: 'Every candidate comes with a Readiness Score, sprint history and verified work output.', bg: '#e3e1d5', chip: '#fbfaf5', d: 'badge', a: 'rgba(201,145,223,0.45)' },
     ],
   },
 }
@@ -92,6 +93,9 @@ function TiltCard({ card, i }: { card: Card; i: number }) {
       >
         {card.sticker}
       </motion.span>
+      <div className="benefit__doodle" style={{ transform: 'translateZ(50px)' }}>
+        <Doodle name={card.d} accent={card.a} />
+      </div>
       <div style={{ transform: 'translateZ(30px)' }}>
         <h3>{card.title}</h3>
         <p>{card.text}</p>

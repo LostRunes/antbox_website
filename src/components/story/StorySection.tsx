@@ -94,7 +94,7 @@ export function StorySection({ name, setName }: { name: string; setName: (n: str
   const mobile = useIsMobile()
   const trackRef = useRef<HTMLDivElement>(null)
   const artRefs = useRef<(HTMLDivElement | null)[]>([])
-  const stroke = mobile ? 34 : 84
+  const stroke = mobile ? 26 : 84
   const pathRef = useRef<SVGPathElement>(null)
   const table = useRef<Table | null>(null)
   const anchorsY = useRef<number[]>([])
@@ -115,19 +115,45 @@ export function StorySection({ name, setName }: { name: string; setName: (n: str
     const tr = track.getBoundingClientRect()
     const w = tr.width
     const h = tr.height
-    const tops: number[] = []
-    const anchors: Pt[] = artRefs.current.map((el, i) => {
+    const anchors: Pt[] = artRefs.current.map((el) => {
       const r = el!.getBoundingClientRect()
-      tops.push(r.top - tr.top)
-      // on phones the scenes stack in one column, so swing the line side to side
-      const x = mobile ? w * (i % 2 ? 0.7 : 0.3) : r.left - tr.left + r.width / 2
-      return [x, r.top - tr.top + r.height * 0.55]
+      return [r.left - tr.left + r.width / 2, r.top - tr.top + r.height * 0.55]
     })
     anchorsY.current = anchors.map((a) => a[1])
 
+    if (mobile) {
+      // Phones: the copy cards span the width, so the line keeps to its own lane on the left edge
+      // and hangs one clean loop off that lane into each illustration.
+      const R = stroke / 2 + 6
+      const lane: Node[] = [{ p: [R, stroke / 2 + 4], t: DOWN }]
+      artRefs.current.forEach((el, i) => {
+        const art = el!.getBoundingClientRect()
+        const sc = art.width / RING.viewW
+        const top = art.top - tr.top
+        let cx: number
+        let cy: number
+        let r: number
+        if (i === RING_CHAPTER) {
+          // wrap the glowing circle behind the monitor
+          r = RING.r * sc + stroke / 2 + 4
+          cx = art.left - tr.left + RING.cx * sc
+          cy = top + RING.cy * sc
+        } else {
+          r = w * 0.2
+          cx = R + r
+          cy = top + art.height * 0.45
+        }
+        // join the lane to the loop's left point, go once round anticlockwise, rejoin the lane
+        lane.push({ p: [cx - r, cy - r * 1.2], t: DOWN }, ...arc(cx, cy, r, 180, -180), { p: [R, cy + r * 1.4], t: DOWN })
+      })
+      lane.push({ p: [R, h + 40], t: DOWN })
+      setGeo({ w, h, d: toPath(lane, w * 0.3) })
+      return
+    }
+
     const nodes: Node[] = [
       { p: [w * 0.5, stroke / 2 + 4], t: DOWN },
-      { p: [w * (mobile ? 0.5 : 0.42), Math.min(120, anchors[0][1] * 0.3)], t: DOWN },
+      { p: [w * 0.42, Math.min(120, anchors[0][1] * 0.3)], t: DOWN },
     ]
     anchors.forEach((a, i) => {
       if (i === RING_CHAPTER) {
@@ -136,27 +162,18 @@ export function StorySection({ name, setName }: { name: string; setName: (n: str
         const sc = art.width / RING.viewW
         const cx = art.left - tr.left + RING.cx * sc
         const cy = art.top - tr.top + RING.cy * sc
-        nodes.push(...arc(cx, cy, RING.r * sc + stroke / 2 + (mobile ? 6 : 14), -80, -260))
+        nodes.push(...arc(cx, cy, RING.r * sc + stroke / 2 + 14, -80, -260))
       } else {
         nodes.push({ p: a, t: DOWN })
       }
       const b = anchors[i + 1]
       if (!b) return
-      if (mobile) {
-        // the ring already curls into chapter 3, so no extra loop right before it
-        if (i + 1 === RING_CHAPTER) return
-        // the copy card sits between scenes on phones, so loop at the top of the next scene where it's visible
-        const r = w * 0.17
-        const cx = w - b[0]
-        nodes.push(...loop(cx, tops[i + 1] + r * 0.9, r, b[0] > cx ? 1 : -1))
-        return
-      }
       const r = Math.min(w * 0.11, 150)
       nodes.push(...loop((a[0] + b[0]) / 2, (a[1] + b[1]) / 2 - r * 0.3, r, b[0] > a[0] ? 1 : -1))
     })
     const last = anchors[anchors.length - 1]
     nodes.push({ p: [w * 0.5, last[1] + (h - last[1]) * 0.6], t: DOWN }, { p: [w * 0.5, h + 40], t: DOWN })
-    setGeo({ w, h, d: toPath(nodes, w * (mobile ? 0.3 : 0.22)) })
+    setGeo({ w, h, d: toPath(nodes, w * 0.22) })
   }, [mobile, stroke])
 
   useLayoutEffect(() => {

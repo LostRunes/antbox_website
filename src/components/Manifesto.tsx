@@ -3,7 +3,7 @@ import { useRef } from 'react'
 
 // `*word*` marks the words that land in purple italic
 const TEXT =
-  'A resume tells people where you have been. A sprint shows them *what* *you* *can* *do.* We built AntBox so talent gets judged by *its* *work* — not its paperwork.'
+  'A resume tells people where you have been. A sprint shows them *what* *you* *can* *do.* We built AntBox so talent gets judged by *its* *work,* not its paperwork.'
 
 const WORDS = TEXT.split(' ').map((w) => ({ text: w.replace(/\*/g, ''), em: w.startsWith('*') }))
 

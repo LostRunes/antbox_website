@@ -393,7 +393,7 @@ export function SceneTrain({ on }: SceneProps) {
 
       {/* student behind table */}
       <motion.g {...rise(on, 0.25)}>
-        <Person x={200} y={330} s={0.95} mood="focus" hairStyle="side" top="#8e43ac" legs="hidden" left={{ a: 22, e: 40 }} right={{ a: 22, e: 40 }} />
+        <Person x={200} y={330} s={0.95} mood="focus" hairStyle="side" top="#8ed1fc" legs="hidden" left={{ a: 22, e: 40 }} right={{ a: 22, e: 40 }} />
         {/* lightbulb */}
         <motion.g {...pop(on, 1.6)}>
           <g className="bob" style={{ ['--d' as string]: '1.8s' }}>

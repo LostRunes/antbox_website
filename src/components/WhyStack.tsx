@@ -1,13 +1,14 @@
 import { AnimatePresence, motion, useMotionValue, useTransform, type PanInfo } from 'motion/react'
 import { useState } from 'react'
+import { Doodle, type DoodleName } from './Doodle'
 import { SplitText } from './SplitText'
 
-const CARDS = [
-  { t: 'Performance-first validation.', p: 'Validation comes from what you ship in a sprint — not from tests or interviews.', bg: '#fbfaf5' },
-  { t: 'Built for both sides.', p: 'One platform where students build careers and companies build tribes.', bg: '#c991df' },
-  { t: 'AI-powered readiness.', p: 'A readiness score generated from sprint performance, collaboration signals and cultural fit.', bg: '#4ade80' },
-  { t: 'No resume round.', p: 'Top performers skip the pile and walk straight into Pre-Placement Offers.', bg: '#fcb900' },
-  { t: 'Tribes, not funnels.', p: 'Companies grow talent communities around culture and craft — hiring becomes a warm handshake.', bg: '#ead2f3' },
+const CARDS: { t: string; p: string; bg: string; d: DoodleName; a: string }[] = [
+  { t: 'Performance-first validation.', p: 'Validation comes from what you ship in a sprint — not from tests or interviews.', bg: '#fbfaf5', d: 'rocket', a: 'rgba(201,145,223,0.45)' },
+  { t: 'Built for both sides.', p: 'One platform where students build careers and companies build tribes.', bg: '#c991df', d: 'bridge', a: 'rgba(255,255,255,0.55)' },
+  { t: 'AI-powered readiness.', p: 'A readiness score generated from sprint performance, collaboration signals and cultural fit.', bg: '#4ade80', d: 'gauge', a: 'rgba(255,255,255,0.55)' },
+  { t: 'No resume round.', p: 'Top performers skip the pile and walk straight into Pre-Placement Offers.', bg: '#fcb900', d: 'bin', a: 'rgba(255,255,255,0.55)' },
+  { t: 'Tribes, not funnels.', p: 'Companies grow talent communities around culture and craft — hiring becomes a warm handshake.', bg: '#ead2f3', d: 'tribe', a: 'rgba(255,255,255,0.55)' },
 ]
 
 /** Tinder-style deck: fling the top card away in any direction, it goes to the back. */
@@ -76,6 +77,7 @@ function StackCard({ idx, pos, onFling, exitX }: { idx: number; pos: number; onF
         <span>0{idx + 1}</span>
         <span>/ 0{CARDS.length}</span>
       </div>
+      <Doodle name={c.d} accent={c.a} className="stack__doodle" />
       <div>
         <h3>{c.t}</h3>
         <p>{c.p}</p>
