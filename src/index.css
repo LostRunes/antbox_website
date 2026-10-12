@@ -483,30 +483,6 @@ p {
   pointer-events: none;
   z-index: 1;
 }
-.hero__scroll {
-  position: absolute;
-  left: 50%;
-  bottom: 18px;
-  translate: -50% 0;
-  display: grid;
-  justify-items: center;
-  gap: 6px;
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  opacity: 0.6;
-}
-.hero__scroll i {
-  width: 1.5px;
-  height: 36px;
-  background: linear-gradient(var(--ink) 50%, transparent 0) 0 0 / 100% 200%;
-  animation: drip 1.6s infinite linear;
-}
-@keyframes drip {
-  to {
-    background-position: 0 -200%;
-  }
-}
 
 /* ---------- story ---------- */
 .story {
@@ -1393,9 +1369,6 @@ p {
 }
 
 @media (max-width: 719px) {
-  .hero__scroll {
-    display: none;
-  }
   .footer__badge {
     top: 32px;
     width: 92px;
