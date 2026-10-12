@@ -92,10 +92,6 @@ export function Hero({ play }: { play: boolean }) {
         </div>
       </motion.div>
 
-      <motion.div className="hero__scroll" style={{ opacity: fade }} initial={{ opacity: 0 }} animate={play ? { opacity: 0.6 } : undefined}>
-        Scroll
-        <i />
-      </motion.div>
     </section>
   )
 }
