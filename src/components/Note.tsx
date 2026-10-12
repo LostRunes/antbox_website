@@ -2,7 +2,7 @@ import { motion } from 'motion/react'
 import type { CSSProperties } from 'react'
 
 type Props = {
-  children: string
+  children?: string
   /** where the arrow points from the text */
   arrow?: 'down-left' | 'down-right' | 'left' | 'right'
   rotate?: number
@@ -56,7 +56,7 @@ export function Note({ children, arrow = 'down-left', rotate = -6, style }: Prop
       aria-hidden
     >
       {arrowFirst && svg}
-      <span>{children}</span>
+      {children && <span>{children}</span>}
       {!arrowFirst && svg}
     </motion.div>
   )

@@ -99,9 +99,6 @@ export function Journey() {
             <br />
             in four sprints.
           </h2>
-          <p className="eyebrow" style={{ opacity: 0.6 }}>
-            Scroll to move →
-          </p>
         </div>
         <motion.div className="journey__rail" ref={railRef} style={{ x }}>
           {STEPS.map((s, i) => (

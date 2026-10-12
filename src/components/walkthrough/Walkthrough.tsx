@@ -87,9 +87,7 @@ export function Walkthrough({ name }: { name: string }) {
         </div>
 
         <div className="wt__right" ref={wrapRef}>
-          <Note arrow="down-left" rotate={4} style={{ top: '-78px', right: '4%' }}>
-            keep scrolling, it clicks itself
-          </Note>
+          <Note arrow="down-left" rotate={4} style={{ top: '-78px', right: '8%' }} />
           <div className="wt__stage" style={{ height: DEVICE_H * scale }}>
             <div className="mac" style={{ transform: `scale(${scale})` }}>
               <div className="mac__screen">
