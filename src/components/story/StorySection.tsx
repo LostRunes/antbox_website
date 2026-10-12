@@ -238,7 +238,7 @@ export function StorySection({ name, setName }: { name: string; setName: (n: str
     <section className="story" id="story">
       <div className="story__intro">
         <p className="eyebrow purple" style={{ marginBottom: 18 }}>
-          A story in five scrolls
+
         </p>
         <SplitText as="h2" text={['Every career', 'has a plot twist.']} stagger={0.02} />
         <p>Follow the line. It's the same road thousands of students walk — until it isn't.</p>
