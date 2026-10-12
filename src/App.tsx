@@ -12,6 +12,7 @@ import { Preloader } from './components/Preloader'
 import { Product } from './components/Product'
 import { Stats } from './components/Stats'
 import { StorySection } from './components/story/StorySection'
+import { Tracks } from './components/Tracks'
 import { Walkthrough } from './components/walkthrough/Walkthrough'
 import { WhyStack } from './components/WhyStack'
 import { startSmoothScroll } from './lib/smooth'
@@ -45,6 +46,7 @@ export default function App() {
         <Walkthrough name={name.trim()} />
         <Stats />
         <Journey />
+        <Tracks />
         <Audience />
         <WhyStack />
         <Product />
