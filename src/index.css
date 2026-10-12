@@ -1219,9 +1219,6 @@ p {
   display: inline-block;
   will-change: transform;
 }
-.footer__word span:first-child {
-  color: var(--purple);
-}
 .footer__meta {
   margin-top: 28px;
   padding-top: 18px;
