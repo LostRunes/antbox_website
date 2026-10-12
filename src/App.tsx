@@ -5,6 +5,7 @@ import { Cursor } from './components/Cursor'
 import { Footer } from './components/Footer'
 import { Hero } from './components/Hero'
 import { Journey } from './components/Journey'
+import { Manifesto } from './components/Manifesto'
 import { Marquee } from './components/Marquee'
 import { Nav } from './components/Nav'
 import { Preloader } from './components/Preloader'
@@ -34,7 +35,11 @@ export default function App() {
       <Nav show={revealed} />
       <main>
         <Hero play={revealed} />
-        <Marquee items={['Campus', 'Sprint', 'Mentor', 'Ship', 'Get hired']} tilt />
+        <div className="cross" aria-hidden>
+          <Marquee items={['Campus', 'Sprint', 'Mentor', 'Ship', 'Get hired']} angle={-3} />
+          <Marquee items={['Real briefs', 'Real mentors', 'Real offers']} angle={3} light reverse speed={2.5} />
+        </div>
+        <Manifesto />
         <StorySection name={name.trim()} setName={setName} />
         <Marquee items={['No resume round', 'Real briefs', 'Pre-placement offers', 'Validated talent']} dark reverse speed={2.5} />
         <Walkthrough name={name.trim()} />

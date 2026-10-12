@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform } from 'motion/react'
 import { useRef } from 'react'
+import { Note } from './Note'
 import { SplitText } from './SplitText'
 
 const KPIS = [
@@ -30,6 +31,9 @@ export function Product() {
         <p className="eyebrow lilac">Tribe analytics engine</p>
         <SplitText as="h2" text={['Your tribe,', 'at a glance.']} stagger={0.02} />
         <p>A corporate dashboard that shows who's ready, who's rising and who fits — powered by the AI readiness engine.</p>
+        <Note arrow="down-left" rotate={-4} style={{ right: '9%', bottom: '-70px', color: 'var(--lilac)' }}>
+          your future manager's view
+        </Note>
       </div>
 
       <motion.div className="dash" ref={ref} style={{ rotateX, scale, y }}>

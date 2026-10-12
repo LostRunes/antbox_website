@@ -2,6 +2,7 @@ import { motion, useMotionValue, useMotionValueEvent, useScroll } from 'motion/r
 import { useCallback, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
 import { useIsMobile } from '../../lib/hooks'
 import { AntShape } from '../Ant'
+import { Note } from '../Note'
 import { SplitText } from '../SplitText'
 import { SceneDiscover, SceneGraduate, SceneHired, ScenePanic, SceneTrain } from './Scenes'
 
@@ -126,7 +127,7 @@ export function StorySection({ name, setName }: { name: string; setName: (n: str
     anchorsY.current = anchors.map((a) => a[1])
 
     const nodes: Node[] = [
-      { p: [w * 0.5, -40], t: DOWN },
+      { p: [w * 0.5, stroke / 2 + 4], t: DOWN },
       { p: [w * (mobile ? 0.5 : 0.42), Math.min(120, anchors[0][1] * 0.3)], t: DOWN },
     ]
     anchors.forEach((a, i) => {
@@ -242,6 +243,9 @@ export function StorySection({ name, setName }: { name: string; setName: (n: str
         </p>
         <SplitText as="h2" text={['Every career', 'has a plot twist.']} stagger={0.02} />
         <p>Follow the line. It's the same road thousands of students walk — until it isn't.</p>
+        <Note arrow="down-right" rotate={-5} style={{ left: 'calc(50% - 330px)', bottom: '-56px' }}>
+          follow the purple line
+        </Note>
       </div>
 
       <div className="story__track" ref={trackRef}>

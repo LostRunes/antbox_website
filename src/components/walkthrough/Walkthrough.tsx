@@ -2,6 +2,7 @@ import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'motion/
 import { useLayoutEffect, useRef, useState } from 'react'
 import { useIsMobile } from '../../lib/hooks'
 import { scrollToY } from '../../lib/smooth'
+import { Note } from '../Note'
 import { SplitText } from '../SplitText'
 import './walkthrough.css'
 import { ApplyScreen, InternScreen, OfferScreen, ScoreScreen, SearchScreen, SprintScreen } from './Screens'
@@ -86,6 +87,9 @@ export function Walkthrough({ name }: { name: string }) {
         </div>
 
         <div className="wt__right" ref={wrapRef}>
+          <Note arrow="down-left" rotate={4} style={{ top: '-78px', right: '4%' }}>
+            keep scrolling, it clicks itself
+          </Note>
           <div className="wt__stage" style={{ height: DEVICE_H * scale }}>
             <div className="mac" style={{ transform: `scale(${scale})` }}>
               <div className="mac__screen">

@@ -1,10 +1,10 @@
 import { motion, useAnimationFrame, useMotionValue, useScroll, useSpring, useTransform, useVelocity, wrap } from 'motion/react'
 import { useRef } from 'react'
 
-type Props = { items: string[]; speed?: number; dark?: boolean; tilt?: boolean; reverse?: boolean }
+type Props = { items: string[]; speed?: number; dark?: boolean; light?: boolean; tilt?: boolean; reverse?: boolean; angle?: number }
 
 /** Infinite marquee that speeds up, reverses and skews with scroll velocity. */
-export function Marquee({ items, speed = 3, dark, tilt, reverse }: Props) {
+export function Marquee({ items, speed = 3, dark, light, tilt, reverse, angle }: Props) {
   const base = useMotionValue(0)
   const { scrollY } = useScroll()
   const velocity = useSpring(useVelocity(scrollY), { damping: 50, stiffness: 400 })
@@ -36,7 +36,11 @@ export function Marquee({ items, speed = 3, dark, tilt, reverse }: Props) {
   )
 
   return (
-    <div className={`marquee ${dark ? 'marquee--dark' : ''} ${tilt ? 'marquee--tilt' : ''}`} aria-hidden>
+    <div
+      className={`marquee ${dark ? 'marquee--dark' : ''} ${light ? 'marquee--light' : ''} ${tilt ? 'marquee--tilt' : ''}`}
+      style={angle ? { rotate: `${angle}deg` } : undefined}
+      aria-hidden
+    >
       <motion.div className="marquee__row" style={{ x, skewX: skew }}>
         {row}
         {row}

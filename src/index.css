@@ -506,6 +506,7 @@ p {
 .story__intro p {
   max-width: 520px;
   margin: 20px auto 0;
+  padding-bottom: 72px;
   color: #55555c;
 }
 .story__track {
@@ -997,6 +998,7 @@ p {
   perspective: 1400px;
 }
 .product__head {
+  position: relative;
   text-align: center;
   display: grid;
   gap: 16px;
@@ -1375,3 +1377,111 @@ p {
   }
 }
 
+
+/* ---------- crossing marquees ---------- */
+.cross {
+  position: relative;
+  height: clamp(190px, 21vw, 280px);
+  overflow: clip;
+  background: var(--cream);
+}
+.cross .marquee {
+  position: absolute;
+  left: -5%;
+  right: -5%;
+  top: 50%;
+  margin-top: calc(-0.5 * (clamp(40px, 7vw, 96px) + 36px));
+}
+.cross .marquee:first-child {
+  z-index: 2;
+  translate: 0 -52%;
+}
+.cross .marquee:last-child {
+  translate: 0 52%;
+}
+.marquee--light {
+  background: var(--lilac);
+  color: var(--ink);
+}
+
+/* ---------- manifesto ---------- */
+.manifesto {
+  position: relative;
+  height: 260vh;
+  background: var(--cream);
+}
+.manifesto__sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 24px;
+  padding: 0 var(--gutter);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.manifesto__text {
+  font-family: var(--serif);
+  font-size: clamp(32px, 4.8vw, 72px);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+.manifesto__text span {
+  display: inline-block;
+  margin-right: 0.24em;
+  will-change: opacity, transform;
+}
+.manifesto__em {
+  color: var(--purple);
+  font-style: italic;
+}
+.manifesto__sign {
+  font-family: 'Caveat', cursive;
+  font-size: 30px;
+  color: var(--purple);
+  align-self: flex-end;
+}
+
+/* ---------- handwritten notes ---------- */
+.note {
+  position: absolute;
+  z-index: 5;
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  font-family: 'Caveat', cursive;
+  font-size: 26px;
+  line-height: 1;
+  color: var(--purple);
+  white-space: nowrap;
+  pointer-events: none;
+}
+.note--left {
+  align-items: center;
+}
+.note--right {
+  align-items: center;
+}
+.note .note__arrow {
+  flex: none;
+  width: 70px;
+  height: auto;
+  rotate: 0deg;
+}
+.note--down-left {
+  flex-direction: row-reverse;
+}
+.note--down-left .note__arrow,
+.note--down-right .note__arrow {
+  transform: translateY(40px);
+}
+.note.on-dark {
+  color: var(--lilac);
+}
+@media (max-width: 899px) {
+  .note {
+    display: none;
+  }
+}

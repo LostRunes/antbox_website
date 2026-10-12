@@ -1,5 +1,6 @@
 import { animate, motion, useInView, useMotionValue, useTransform } from 'motion/react'
 import { useEffect, useRef } from 'react'
+import { Note } from './Note'
 import { SplitText } from './SplitText'
 
 function Counter({ to, suffix = '', format = true }: { to: number; suffix?: string; format?: boolean }) {
@@ -60,6 +61,9 @@ export function Stats() {
       </div>
 
       <div className="dial" ref={dialRef}>
+        <Note arrow="down-right" rotate={-6} style={{ top: '-74px', left: '-20px' }}>
+          real work, not vibes
+        </Note>
         <svg viewBox="0 0 340 340" aria-hidden>
           <circle cx="170" cy="170" r={R} fill="none" stroke="#e3e1d5" strokeWidth="22" />
           <motion.circle cx="170" cy="170" r={R} fill="none" stroke="#8e43ac" strokeWidth="22" strokeLinecap="round" strokeDasharray={C} style={{ strokeDashoffset: offset }} />
