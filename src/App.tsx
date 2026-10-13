@@ -7,6 +7,7 @@ import { Hero } from './components/Hero'
 import { Journey } from './components/Journey'
 import { Manifesto } from './components/Manifesto'
 import { Marquee } from './components/Marquee'
+import { Mountain } from './components/mountain/Mountain'
 import { Nav } from './components/Nav'
 import { Preloader } from './components/Preloader'
 import { Product } from './components/Product'
@@ -50,6 +51,7 @@ export default function App() {
         <Audience />
         <WhyStack />
         <Product />
+        <Mountain />
         <Marquee items={['Build your tribe', 'Own your career story', 'Join the colony']} speed={2.5} />
         <Footer />
       </main>

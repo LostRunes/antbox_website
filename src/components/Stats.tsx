@@ -32,7 +32,7 @@ export function Stats() {
   }, [inView, score])
 
   return (
-    <section className="stats">
+    <section className="stats" id="proof">
       <div>
         <p className="eyebrow purple" style={{ marginBottom: 16 }}>
           Proof, not promises

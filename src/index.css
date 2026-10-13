@@ -1750,3 +1750,200 @@ p {
     display: none;
   }
 }
+
+/* ---------- the climb (3D mountain) ---------- */
+.mtn {
+  background: var(--cream);
+  padding: clamp(16px, 2vw, 24px);
+}
+.mtn__frame {
+  position: relative;
+  height: min(92svh, 860px);
+  min-height: 560px;
+  border-radius: clamp(28px, 4vw, 56px);
+  overflow: hidden;
+  background: var(--cream);
+  border: 1px solid var(--sand);
+}
+.mtn__stage {
+  position: absolute;
+  inset: 0;
+}
+.mtn__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.mtn__head {
+  position: absolute;
+  z-index: 4;
+  left: clamp(20px, 4vw, 56px);
+  top: clamp(20px, 4vw, 52px);
+  max-width: 460px;
+  pointer-events: none;
+}
+.mtn__title {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(36px, 4.6vw, 72px);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  margin: 10px 0 12px;
+}
+.mtn__hint {
+  font-size: 14px;
+  color: #55555c;
+}
+.mtn__tags {
+  position: absolute;
+  z-index: 4;
+  left: clamp(20px, 4vw, 56px);
+  right: clamp(20px, 4vw, 56px);
+  bottom: 18px;
+  display: flex;
+  justify-content: space-between;
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #77777f;
+  pointer-events: none;
+}
+.mtn__pins {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+.mtn__pin {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  transition: opacity 0.3s;
+  will-change: transform;
+}
+.mtn__stem {
+  position: absolute;
+  left: -1px;
+  bottom: 0;
+  width: 2px;
+  height: 64px;
+  background: var(--ink);
+  border-radius: 2px;
+}
+.mtn__plus {
+  position: absolute;
+  left: -24px;
+  bottom: 60px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--ink);
+  color: var(--paper);
+  pointer-events: auto;
+  box-shadow: 0 10px 24px -10px rgba(0, 0, 0, 0.5);
+  transition: transform 0.35s var(--ease-out), background 0.3s;
+}
+.mtn__plus svg {
+  transition: transform 0.35s var(--ease-out);
+}
+.mtn__plus.is-summit {
+  background: var(--purple);
+}
+.mtn__plus.is-summit::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid var(--purple);
+  animation: pulse-ring 2s ease-out infinite;
+}
+@keyframes pulse-ring {
+  from { transform: scale(0.9); opacity: 1; }
+  to { transform: scale(1.5); opacity: 0; }
+}
+.mtn__plus:hover,
+.mtn__plus.is-on {
+  transform: scale(1.12);
+  background: var(--purple);
+}
+.mtn__plus.is-on svg {
+  transform: rotate(45deg);
+}
+.mtn__tip {
+  position: absolute;
+  z-index: 5;
+  width: 260px;
+  margin: -150px 0 0 34px;
+  padding: 16px 18px;
+  border-radius: 18px;
+  background: var(--paper);
+  box-shadow: 0 30px 60px -24px rgba(61, 22, 80, 0.45), 0 0 0 1px var(--sand);
+  pointer-events: none;
+  display: grid;
+  gap: 4px;
+}
+.mtn__tip.is-flip {
+  margin-left: -294px;
+}
+.mtn__tip.is-below {
+  margin-top: 16px;
+}
+.mtn__tip small {
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 11px;
+  color: var(--purple);
+}
+.mtn__tip b {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 1.05;
+}
+.mtn__tip p {
+  font-size: 14px;
+  color: #55555c;
+}
+.mtn__go {
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--purple);
+}
+@media (max-width: 899px) {
+  .mtn__frame {
+    height: 78svh;
+    min-height: 520px;
+  }
+  .mtn__plus {
+    width: 40px;
+    height: 40px;
+    left: -20px;
+    bottom: 46px;
+  }
+  .mtn__stem {
+    height: 50px;
+  }
+  .mtn__tip {
+    width: 210px;
+    margin: -140px 0 0 26px;
+    padding: 12px 14px;
+  }
+  .mtn__tip.is-docked {
+    left: 14px;
+    right: 14px;
+    bottom: 44px;
+    width: auto;
+    margin: 0;
+  }
+  .mtn__tip b {
+    font-size: 20px;
+  }
+}
